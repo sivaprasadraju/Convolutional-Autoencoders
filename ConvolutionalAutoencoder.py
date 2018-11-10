@@ -105,3 +105,10 @@ def autoencoder(input_img):
 	up2 = UpSampling2D((2,2))(conv5)
 	decoded = Conv2D(1, (3,3), activation='sigmoid',padding='same')(up2)
 	return decoded
+
+autoencoder = Model(input_img, autoencoder(input_img))
+autoencoder.compile(loss='mean_squared_error', optimizer = RMSprop())
+
+autoencoder.summary()
+print(train_data.shape)
+autoencoder_train = autoencoder.fit(train_data, train_data, batch_size=batch_size,epochs=epochs,verbose=1,validation_data=(test_data, test_data))
